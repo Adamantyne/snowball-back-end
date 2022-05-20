@@ -3,8 +3,8 @@ import { createUser } from "../controllers/Controller.js";
 
 import { validateUser, verifyUser } from "../middlewares/Middleware.js";
 
-const authRouter = Router();
+const userRouter = Router();
 
-authRouter.post("/users", validateUser, verifyUser, createUser);
+userRouter.post("/users", validateUser, verifyUser, createUser);
 
-export default authRouter;
+export default userRouter;
