@@ -1,4 +1,5 @@
 import db from "../db.js";
+import { userSchema } from "../schemas/userSchema.js";
 
 export async function validateVideoId(req, res, next) {
   const user = req.body;
@@ -16,4 +17,17 @@ export async function validateVideoId(req, res, next) {
     console.log(err);
     res.status(500).send(err);
   }
+}
+
+export async function validateVideo(req, res, next) {
+    const video = req.body;
+    
+    try {
+        await videoSchema.validateAsync(video);
+        next();
+    }
+    catch (err) {
+        console.log(err);
+        res.status(422).send(err);
+    }
 }
