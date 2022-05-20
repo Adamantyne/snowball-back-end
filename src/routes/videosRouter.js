@@ -12,5 +12,4 @@ videosRouter.get("/videos/:id", validateVideoId, getVideo);
 videosRouter.post("/videos", validateVideo, createVideo);
 
 
-
 export default videosRouter;
