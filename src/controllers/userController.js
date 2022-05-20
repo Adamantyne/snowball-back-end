@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 import db from "../db.js";
 
-export default async function getUser(req,res){
+export async function getUser(req,res){
     const {id}= req.params;
     try {
         if(!ObjectId.isValid(id)){
@@ -10,7 +10,6 @@ export default async function getUser(req,res){
         }
         const collection = db.collection("users");
         const user = await collection.findOne({_id: new ObjectId(id)});
-        console.log(user)
         if(!user){
             return res.status(404).send("usuário não cadastrado");
         }
@@ -20,4 +19,23 @@ export default async function getUser(req,res){
         console.log(error);
         return res.sendStatus(500);
     }
+}
+
+export async function createUser(req, res) {
+  const user = req.body;
+
+  try {
+    if (res.locals.user.name) {
+      res.status(200).send(res.locals.user._id);
+    } else {
+      await db.collection("users").insertOne(user);
+      const userId = await db
+        .collection("users")
+        .findOne({ email: user.email });
+      res.status(200).send(userId);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
 }
