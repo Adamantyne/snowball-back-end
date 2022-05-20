@@ -4,10 +4,10 @@ import chalk from "chalk";
 
 dotenv.config();
 
-console.log(chalk.bold.blue('URL:',process.env.MONGO_URL));
+console.log(chalk.bold.blue('URL:',process.env.MONGO_URI));
 
 let db = null;
-const mongoClient = new MongoClient(process.env.MONGO_URL);
+const mongoClient = new MongoClient(process.env.MONGO_URI);
 
 try {
   await mongoClient.connect();
