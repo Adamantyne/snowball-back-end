@@ -1,5 +1,5 @@
 import db from "../db.js";
-import { userSchema } from "../schemas/userSchema.js";
+import { videoSchema } from "../schemas/videoSchema.js";
 
 export async function validateVideoId(req, res, next) {
   const user = req.body;
