@@ -1,6 +1,7 @@
 import db from "../db.js";
 import { ObjectId } from "mongodb";
 import { videoSchema } from "../schemas/videoSchema.js";
+import { questionSchema } from "../schemas/questionSchema.js"
 
 export async function validateVideoId(req, res, next) {
   const {id} = req.params;
@@ -29,6 +30,18 @@ export async function validateVideo(req, res, next) {
         if(videoFromDb){
             return res.status(400).send("video já cadastrado");
         }
+        next();
+    }
+    catch (err) {
+        console.log(err);
+        res.status(422).send(err);
+    }
+}
+
+export async function validateQuestion(req, res, next) {
+    const question = req.body;
+    try {
+        await questionSchema.validateAsync(question);
         next();
     }
     catch (err) {

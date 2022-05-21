@@ -26,3 +26,14 @@ export async function createVideo(req, res) {
         });
     }
 }
+
+export async function createQuestion(req, res) {
+    const {question, answer, email} = req.body;
+    try {
+        await db.collection("videos").updateOne({link: res.locals.video.link},{$push: {questions: {question, answer, email}}});
+        res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+}

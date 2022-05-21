@@ -17,7 +17,7 @@ export async function getUser(req,res){
     } catch (error) {
         console.log("Error logging out.");
         console.log(error);
-        return res.sendStatus(500);
+        res.status(500).send(err);
     }
 }
 
