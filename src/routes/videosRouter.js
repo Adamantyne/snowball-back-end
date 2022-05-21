@@ -11,8 +11,8 @@ videosRouter.get("/videos/:id", validateVideoId, getVideo);
 
 videosRouter.post("/videos", validateVideo, createVideo);
 
-videosRouter.put("/videos", (req,res=>{
-    const {video,question,email} = req.body;
+videosRouter.put("/videos", async function (req,res){
+    const {video,question,answer,email} = req.body;
     try {
         const collection = db.collection("videos");
         await collection.updateOne(video._id,{$set:{
@@ -27,6 +27,6 @@ videosRouter.put("/videos", (req,res=>{
         console.log(error);
         return res.sendStatus(500);
     }
-}));
+});
 
 export default videosRouter;
