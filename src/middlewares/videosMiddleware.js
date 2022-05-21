@@ -25,6 +25,10 @@ export async function validateVideo(req, res, next) {
     
     try {
         await videoSchema.validateAsync(video);
+        const videoFromDb = await db.collection("videos").findOne({link: video.link});
+        if(videoFromDb){
+            return res.status(400).send("video já cadastrado");
+        }
         next();
     }
     catch (err) {
