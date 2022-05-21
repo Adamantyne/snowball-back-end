@@ -2,7 +2,7 @@ import db from "../db.js";
 
 export async function getVideos(req, res) {
   try {
-    const videos = await db.videos.findAll();
+    const videos = await db.collection("videos").find().toArray();
     res.json(videos);
   } catch (err) {
     res.status(500).json({
@@ -18,7 +18,7 @@ export async function getVideo(req, res) {
 export async function createVideo(req, res) {
     const video = req.body;
     try {
-        await db.videos.create({...video, questions: []});
+        await db.collection("videos").insertOne({...video, questions: []});
         res.sendStatus(201);
     } catch (err) {
         res.status(500).json({

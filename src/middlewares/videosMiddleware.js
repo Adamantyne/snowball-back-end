@@ -1,17 +1,18 @@
 import db from "../db.js";
-import { userSchema } from "../schemas/userSchema.js";
+import { ObjectId } from "mongodb";
+import { videoSchema } from "../schemas/videoSchema.js";
 
 export async function validateVideoId(req, res, next) {
-  const user = req.body;
+  const {id} = req.params;
   try {
     if(!ObjectId.isValid(id)){
         return res.status(400).send("id inválido");
     }
-    const video = await db.collection("videos").findOne({_id: new ObjectId(id)});
-    if(!video){
+    const videoFromDb = await db.collection("videos").findOne({_id: new ObjectId(id)});
+    if(!videoFromDb){
         return res.status(404).send("video não encontrado");
     }  
-    res.locals.video = video;
+    res.locals.video = videoFromDb;
     next();
   } catch (err) {
     console.log(err);
@@ -24,6 +25,10 @@ export async function validateVideo(req, res, next) {
     
     try {
         await videoSchema.validateAsync(video);
+        const videoFromDb = await db.collection("videos").findOne({link: video.link});
+        if(videoFromDb){
+            return res.status(400).send("video já cadastrado");
+        }
         next();
     }
     catch (err) {

@@ -25,7 +25,7 @@ export async function createUser(req, res) {
   const user = req.body;
 
   try {
-    if (res.locals.user.name) {
+    if (res.locals.user) {
       res.status(200).send(res.locals.user._id);
     } else {
       await db.collection("users").insertOne(user);

@@ -21,7 +21,7 @@ export async function verifyUser(req, res, next) {
     if (userFromDb) {
       res.locals.user = userFromDb;
       if (userFromDb.name !== user.name) {
-        res.status(422).send("User already exist.");
+        return res.status(422).send("User already exist.");
       }
     }
     next();
