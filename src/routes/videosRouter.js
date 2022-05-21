@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { getVideos, getVideo, createVideo } from "../controllers/videosController.js";
+import { getVideos, getVideo, createVideo, createQuestion } from "../controllers/videosController.js";
 
-import { validateVideoId, validateVideo } from "../middlewares/videosMiddleware.js";
+import { validateVideoId, validateVideo, validateQuestion } from "../middlewares/videosMiddleware.js";
 
 const videosRouter = Router();
 
@@ -11,22 +11,6 @@ videosRouter.get("/videos/:id", validateVideoId, getVideo);
 
 videosRouter.post("/videos", validateVideo, createVideo);
 
-videosRouter.put("/videos", (req,res=>{
-    const {video,question,email} = req.body;
-    try {
-        const collection = db.collection("videos");
-        await collection.updateOne(video._id,{$set:{
-            questions:[...video.questions,{
-                question,
-                answer,
-                email
-            }]
-        }});
-    } catch (error) {
-        console.log("Error logging out.");
-        console.log(error);
-        return res.sendStatus(500);
-    }
-}));
+videosRouter.put("/videos/:id", validateVideoId, validateQuestion, createQuestion);
 
 export default videosRouter;
