@@ -6,7 +6,7 @@ export async function getUser(req,res){
     const {id}= req.params;
     try {
         if(!ObjectId.isValid(id)){
-            return res.status(404).send("id de usuário inválido");
+            return res.status(404).send("id de usuário é inválido");
         }
         const collection = db.collection("users");
         const user = await collection.findOne({_id: new ObjectId(id)});
